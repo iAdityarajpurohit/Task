@@ -1,0 +1,125 @@
+function apartmentHunting(blocks, reqs) {
+  // Write your code here.
+
+    const hashMap = new Map(reqs.map((curElm) => [curElm, 0]));
+    const hashSet = new Set();
+    let find = 0;
+    const required = reqs.length;
+    let temp = 0;
+    let res = [];
+    let min = Infinity;
+    blocks.forEach((block, index) => {
+    reqs.forEach((curElm) => {
+    if (block[curElm]) {
+    hashMap.set(curElm, hashMap.get(curElm) + 1);
+    if (!hashSet.has(curElm)) {
+    hashSet.add(curElm);
+    find++;
+    }
+    }
+    })
+    
+        while (find === required) {
+            let prev = blocks[temp];
+            let distance = index - temp;
+            if (distance < min) {
+                min = distance;
+                res = [temp, index];
+            }
+            reqs.forEach((curElm) => {
+                if (prev[curElm]) {
+                    hashMap.set(curElm, hashMap.get(curElm) - 1);
+                    const count = hashMap.get(curElm);
+                    if (hashSet.has(curElm) && count < 1) {
+                        hashSet.delete(curElm);
+                        find--;
+                    }
+                }
+            })
+            temp++;
+        }
+    })
+    return res[0] > -1 ? Math.floor((res[0]+res[1])/2) : null;
+    }
+let  blocks = [
+    {
+        "gym": false,
+        "school": true,
+        "store": false,
+    },
+    {
+        "gym": true,
+        "school": false,
+        "store": false,
+    },
+    {
+        "gym": true,
+        "school": true,
+        "store": false,
+    },
+    {
+        "gym": false,
+        "school": true,
+        "store": false,
+    },
+    {
+    "gym": false,
+    "school": true,
+    "store": true,
+    }
+    ]
+  const reqs = ["gym", "school", "store"];
+
+console.log(apartmentHunting(blocks, reqs)); 
+
+// Do not edit the line below.
+exports.apartmentHunting = apartmentHunting;
+
+
+/*
+
+Explanation 
+
+Here is a step by step dry run of the code using the input:
+
+blocks = [
+  {
+    "gym": false,
+    "school": true,
+    "store": false,
+  },
+  {
+    "gym": true,
+    "school": false,
+    "store": false,
+  },
+  {
+    "gym": true,
+    "school": true,
+    "store": false,
+  },
+  {
+    "gym": false,
+    "school": true,
+    "store": false,
+  },
+  {
+    "gym": false,
+    "school": true,
+    "store": true,
+  },
+];
+reqs = ["gym", "school", "store"];
+
+
+ 1) Initialize heshMap to a new Map with the keys "gym", "school", and "store" and the values 0. Initialize hashSet to a new empty set. Initialize find to 0. Initialize min to Infinity.
+ 2) Iterate through the blocks. The first block has the reqs "school" and "store". Increment the count for "school" in hashMap. Add "school" to hashSet and increment find. Increment the count for "store" in hashMap. Add "store" to hashSet and increment find. find is now 2.
+ 3) The second block has the reqs "gym" and "school". Increment the count for "gym" in hashMap. Add "gym" to hashSet and increment find. find is now 3.
+ 4) The third block has the reqs "gym" and "school". find is already 3, so no changes are made.
+ 5) The fourth block has the reqs "school". find is already 3, so no changes are made.
+ 6) The fifth block has the reqs "school" and "store". find is already 3, so no changes are made.
+ 7) find is 3, which is equal to the number of reqs, so the optimal range is find. Update min to 2, the distance from the fifth block to the second block. The optimal range is from the second block to the fifth block, inclusive. The middle block is at index 3. Return 3.
+
+*/
+
+
