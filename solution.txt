@@ -79,8 +79,13 @@ exports.apartmentHunting = apartmentHunting;
 /*
 
 Explanation 
+ It first stores the count of each required building in a hashMap , and it maintains a hashSet  of the requirements that have been find so far. It also keeps track of the number of requirements that have been find so far in the variable find.
 
-Here is a step by step dry run of the code using the input:
+Then, it iterates through the blocks and for each block, it increments the count for each requirement find in the block. If a requirement is find that has not been find before, it adds it to the hashSet set and increments the find variable.
+
+Once all the requirements have been find, it updates the min variable if the distance from the current block to the starting block is smaller than the current value of min. It also removes the first block from the window by decrementing the count for each requirement find in that block and removing it from the hashSet set if its count becomes 0.
+
+-> Here is a step by step dry run of the code using the input:
 
 blocks = [
   {
@@ -119,6 +124,7 @@ reqs = ["gym", "school", "store"];
  5) The fourth block has the reqs "school". find is already 3, so no changes are made.
  6) The fifth block has the reqs "school" and "store". find is already 3, so no changes are made.
  7) find is 3, which is equal to the number of reqs, so the optimal range is find. Update min to 2, the distance from the fifth block to the second block. The optimal range is from the second block to the fifth block, inclusive. The middle block is at index 3. Return 3.
+
 
 */
 
